@@ -1,0 +1,78 @@
+@defer (when juguete){
+
+  <div class="p-2 m-2 text-center">
+    @if (id){
+      <h2>EDITING</h2>
+    } @else {
+      <h2>NEW</h2>
+    }
+  </div>
+
+  <!-- FORMULARIO -->
+  <div class="row">
+    <div class="col-6">
+      <form [formGroup]="formJuguetes"
+            (ngSubmit)="onSubmit()">
+
+        <div class="form-floating mb-3">
+          <input formControlName="nombre"
+                 type="text" class="form-control" id="nombre" placeholder="nombre">
+          <label for="nombre">Nombre</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="imagen"
+                 type="text" class="form-control" id="imagen" placeholder="imagen">
+          <label for="imagen">Imagen</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="categoria"
+                 type="text" class="form-control" id="categoria" placeholder="categoria">
+          <label for="categoria">Categoría</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="edadMinima"
+                 type="text" class="form-control" id="edadMinima" placeholder="edadMinima">
+          <label for="edadMinima">Edad mínima</label>
+        </div>
+
+        <div class="form-floating mb-3">
+          <input formControlName="precio"
+                 type="text" class="form-control" id="precio" placeholder="precio">
+          <label for="precio">Precio</label>
+        </div>
+
+        <div class="text-center">
+          <div class="btn p-2">
+            <button type="submit" class="btn-outline-success">{{id?"Editar":"Crear"}}</button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+
+    <!-- CARD SHOW IMG -->
+    <div class="col-6">
+      <div class="card shadow">
+        <div class="card-header text-center">
+          <h2>{{nombre?.value}}</h2>
+        </div>
+        <div class="card-img-bottom img-fluid text-center">
+          @if (imagen?.value){
+            <img src="{{imagen?.value}}"
+                 class="img-fluid">
+          } @else {
+            <img src="/noImage.jpg"
+                 class="img-fluid">
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+} @placeholder (minimum 500){
+  <h2 class="text-center">Loading...</h2>
+}

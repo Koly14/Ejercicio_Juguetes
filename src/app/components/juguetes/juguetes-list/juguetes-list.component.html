@@ -1,0 +1,51 @@
+@defer (when juguetes){
+  <div class="row">
+    @for (juguete of juguetes; track juguete._id) {
+      <div class="col-12 p-2 m-2">
+        <div class="card">
+          <div class="card-header bg-light">
+            <h2 class="card-title text-center text-capitalize">{{juguete.nombre}}</h2>
+          </div>
+          <div class="row text-center align-items-center">
+            <div class="col-5">
+              <div class="card-body">
+                <p><strong>Id: </strong>{{juguete._id}}</p>
+                <p><strong>Categoria: </strong>{{juguete.categoria}}</p>
+                <p><strong>Edad mínima: </strong>{{juguete.edadMinima}}</p>
+                <p><strong>Precio: </strong>{{juguete.precio}}</p>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="btn btn-outline-primary bo" routerLink="/update/{{juguete._id}}">
+                <h1>
+                  <fa-icon [icon]="faPenToSquare"></fa-icon>
+                </h1>
+              </div>
+            </div>
+            <div class="col-1">
+              <div class="btn btn-outline-danger" (click)="deleteItem(juguete._id)">
+                <h1>
+                  <fa-icon [icon]="faTrash"></fa-icon>
+                </h1>
+              </div>
+            </div>
+            <div class="col-5">
+              <div class="card-img">
+                <img class="img-fluid" src="{{juguete.imagen}}" alt="">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    }
+
+    <!-- MODAL -->
+
+
+  </div>
+} @placeholder (minimum 500){
+  <div class="container">
+    <h2 class="text-center">Loading...</h2>
+  </div>
+
+}
