@@ -1,0 +1,37 @@
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <h2 class="text-center text-primary">PEDIDO</h2>
+
+    @if (jugueteList.length === 0) {
+      <h3 class="text-center">No hay juguetes</h3>
+      <img src="https://img.freepik.com/vector-gratis/ilustracion-concepto-carrito-compras-supermercado_114360-22408.jpg">
+    }
+
+    @for (juguete of jugueteList; track juguete._id){
+
+      <div class="card bg-gradient">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <h4 class="text-capitalize">{{juguete.nombre}}</h4>
+            <img class="img-fluid card-img" src="{{juguete.imagen}}">
+          </div>
+          <p class="card-text text-primary">{{juguete.precio | currency: "EUR"}}</p>
+        </div>
+      </div>
+    }
+
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-content-center">
+          <div class="card-title text-primary text-start">TOTAL</div>
+          <div class="text-end">
+            <div class="badge bg-primary">
+              {{totalPrice | currency: "EUR"}}
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

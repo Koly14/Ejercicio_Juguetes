@@ -1,5 +1,5 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {JuguetesService} from "../../../services/juguetes.service";
 import {Juguete} from "../../../common/interfaceJuguetes";
 import {Router} from "@angular/router";
@@ -20,37 +20,38 @@ export class JuguetesAddComponent implements OnInit{
   // Para recoger el ID desde la pagina anterior
   @Input('id') id!:string;
 
+  loaded:boolean = false;
+
   // Para hacer el formulario reactivo de Angular
   private readonly formBuilder: FormBuilder = inject(FormBuilder);
   formJuguetes : FormGroup = this.formBuilder.group(
     {
-      // Si pongo aqui el "_id: []" - EN ESTE EJERCICIO DE MONGODB ME DA ERROR AL ACTUALIZAR por que es unico este ID
-      nombre: [],
-      imagen: [],
-      categoria: [],
-      edadMinima: [],
-      precio: []
+      id: [],
+      nombre: ["",[Validators.required,Validators.minLength(3)]],
+      imagen: ["",[Validators.required]],
+      categoria: ["",[Validators.required,Validators.minLength(3)]],
+      edadMinima: [0,[Validators.required, Validators.min(5)]],
+      precio: [0,[Validators.required, Validators.min(1)]]
     }
   );
 
   // Para poder acceder al previsualizado de lo que hay en el interior del formJuguetes.get ("");
-  get nombre () {
+  get nombre ():any {
     return this.formJuguetes.get('nombre');
   }
-  get imagen () {
+  get imagen ():any  {
     return this.formJuguetes.get('imagen');
   }
-  get categoria () {
+  get categoria ():any  {
     return this.formJuguetes.get('categoria');
   }
-  get edadMinima () {
+  get edadMinima ():any  {
     return this.formJuguetes.get('edadMinima');
   }
-  get precio () {
+  get precio ():any  {
     return this.formJuguetes.get('precio');
   }
 
-  juguete!:Juguete;
 
   ngOnInit() {
     this.loadOneJuguete();
@@ -58,18 +59,13 @@ export class JuguetesAddComponent implements OnInit{
 
   private loadOneJuguete() {
     if (this.id){
-      // ADDING - NO TIENE RETURN
+      // ADDING
       this.juguetesService.getOneJuguete(this.id).subscribe(
         {
           next: value => {
-            this.juguete = value;
             // NECESARIO PARA PODER CARGAR LOS INPUTS CON EL ITEM PARA EDITAR
-            this.formJuguetes.setControl("id",new FormControl(this.juguete._id));
-            this.formJuguetes.setControl("nombre",new FormControl(this.juguete.nombre));
-            this.formJuguetes.setControl("imagen",new FormControl(this.juguete.imagen));
-            this.formJuguetes.setControl("categoria",new FormControl(this.juguete.categoria));
-            this.formJuguetes.setControl("edadMinima",new FormControl(this.juguete.edadMinima));
-            this.formJuguetes.setControl("precio",new FormControl(this.juguete.precio));
+            this.formJuguetes.patchValue(value); // Si hay campos que no interesan poner para rellenar se pone esto
+            this.loaded = true; // Para que cargue la pagina
           },
           error: err => console.log(err),
           complete:() => console.log("Loaded Juguete"),
@@ -77,13 +73,17 @@ export class JuguetesAddComponent implements OnInit{
       );
     } else {
       // NEW
+      this.loaded = true; // Para que cargue la pagina
       this.formJuguetes.reset();
-      this.juguete = this.formJuguetes.getRawValue() // Esto es para que no se quede en el Loading...
     }
 
   }
 
   onSubmit() {
+    if(this.formJuguetes.invalid){
+      this.formJuguetes.markAllAsTouched();
+      return;
+    }
     if (this.id){
       // UPDATE
       this.juguetesService.updateJuguete(this.id, this.formJuguetes.getRawValue()).subscribe(

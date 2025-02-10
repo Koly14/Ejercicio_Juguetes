@@ -2,13 +2,14 @@ import {inject, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {ApiJuguetes, Juguete, StatusMessage, UpdateStatusMessage} from "../common/interfaceJuguetes";
+import {environment} from "../environment/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class JuguetesService {
   private readonly http: HttpClient = inject(HttpClient);
-  private urlApi: string = "https://api-juguetes.vercel.app/api/v2/juguete";
+  private urlApi: string = environment.urlBase;
 
   constructor() {
   }
@@ -17,6 +18,17 @@ export class JuguetesService {
     return this.http.get<ApiJuguetes>(this.urlApi+'/alljuguetes');
   }
 
+  //PAGINADA
+  getAllPagedJuguetes(page:number):Observable<ApiJuguetes>{
+    return this.http.get<ApiJuguetes>(this.urlApi+'/juguetes?page='+page);
+  }
+
+  // JUGUETE BY NAME
+  getJugueteByName(name:string):Observable<Juguete[]> {
+    return this.http.get<Juguete[]>(this.urlApi+'/jugueteByName/'+name);
+  }
+
+  // LA API NOS DEVUELVE AQUI UN JUGUETE
   getOneJuguete(id:string):Observable<Juguete>{
     return this.http.get<Juguete>(this.urlApi+'/juguete/'+id);
   }

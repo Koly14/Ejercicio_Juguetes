@@ -1,4 +1,4 @@
-@defer (when juguete){
+@defer (when loaded){
 
   <div class="p-2 m-2 text-center">
     @if (id){
@@ -14,36 +14,101 @@
       <form [formGroup]="formJuguetes"
             (ngSubmit)="onSubmit()">
 
+        <!-- NOMBRE -->
         <div class="form-floating mb-3">
           <input formControlName="nombre"
                  type="text" class="form-control" id="nombre" placeholder="nombre">
           <label for="nombre">Nombre</label>
         </div>
-
+        <!-- VALIDATOR -->
+        @if(nombre.invalid && (nombre.dirty || nombre.touched)){
+          @if (nombre.errors["required"]){
+            <div class="alert alert-danger">
+              <h5>Nombre es obligado</h5>
+            </div>
+          }
+          @if (nombre.errors['minlength']){
+            <div class="alert alert-danger">
+              <h5>No menor a 3 carácteres</h5>
+            </div>
+          }
+        }
+        <!-- IMAGEN -->
         <div class="form-floating mb-3">
           <input formControlName="imagen"
                  type="text" class="form-control" id="imagen" placeholder="imagen">
           <label for="imagen">Imagen</label>
         </div>
+        <!-- VALIDATOR -->
+        @if(imagen.invalid && (imagen.dirty || imagen.touched)){
+          @if (imagen.errors["required"]){
+            <div class="alert alert-danger">
+              <h5>Imagen es obligado</h5>
+            </div>
+          }
+        }
 
+        <!-- CATEGORIA -->
         <div class="form-floating mb-3">
           <input formControlName="categoria"
                  type="text" class="form-control" id="categoria" placeholder="categoria">
           <label for="categoria">Categoría</label>
         </div>
+        <!-- VALIDATOR -->
+        @if(categoria.invalid && (categoria.dirty || categoria.touched)){
+          @if (categoria.errors["required"]){
+            <div class="alert alert-danger">
+              <h5>Categoria es obligado</h5>
+            </div>
+          }
+          @if (categoria.errors['minlength']){
+            <div class="alert alert-danger">
+              <h5>No menor a 3 carácteres</h5>
+            </div>
+          }
+        }
 
+        <!-- EDAD MINIMA -->
         <div class="form-floating mb-3">
           <input formControlName="edadMinima"
-                 type="text" class="form-control" id="edadMinima" placeholder="edadMinima">
+                 type="number" class="form-control" id="edadMinima" placeholder="edadMinima">
           <label for="edadMinima">Edad mínima</label>
         </div>
+        <!-- VALIDATOR -->
+        @if(edadMinima.invalid && (edadMinima.dirty || edadMinima.touched)){
+          @if (edadMinima.errors["required"]){
+            <div class="alert alert-danger">
+              <h5>Edad mínima es obligado</h5>
+            </div>
+          }
+          @if (edadMinima.errors['min']){
+            <div class="alert alert-danger">
+              <h5>No menor a 5 años</h5>
+            </div>
+          }
+        }
 
+        <!-- PRECIO -->
         <div class="form-floating mb-3">
           <input formControlName="precio"
-                 type="text" class="form-control" id="precio" placeholder="precio">
+                 type="number" class="form-control" id="precio" placeholder="precio">
           <label for="precio">Precio</label>
         </div>
+        <!-- VALIDATOR -->
+        @if(precio.invalid && (precio.dirty || precio.touched)){
+          @if (precio.errors["required"]){
+            <div class="alert alert-danger">
+              <h5>Precio es obligado</h5>
+            </div>
+          }
+          @if (precio.errors['min']){
+            <div class="alert alert-danger">
+              <h5>No menor a 1 €</h5>
+            </div>
+          }
+        }
 
+        <!-- SUBMIT -->
         <div class="text-center">
           <div class="btn p-2">
             <button type="submit" class="btn-outline-success">{{id?"Editar":"Crear"}}</button>
