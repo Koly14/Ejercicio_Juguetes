@@ -1,7 +1,6 @@
 import {Component, inject, Input, OnInit} from '@angular/core';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {JuguetesService} from "../../../services/juguetes.service";
-import {Juguete} from "../../../common/interfaceJuguetes";
 import {Router} from "@angular/router";
 
 @Component({

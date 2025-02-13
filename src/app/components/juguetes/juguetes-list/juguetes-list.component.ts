@@ -39,7 +39,8 @@ export class JuguetesListComponent implements OnInit{
     this.loadSearch();
   }
 
-  public loadJuguetes() {
+  public loadJuguetes(page:number = this.page) {
+    this.page = page;
     return this.apiService.getAllPagedJuguetes(this.page).subscribe(
       {
         next:value => {
